@@ -10,6 +10,7 @@ import { fromEvent, Subscription, throttleTime } from 'rxjs';
     <h2>Throttle Demo</h2>
     <p>Scroll the page or rapidly click the button; events are processed at most once every 500ms.</p>
     <button (click)="onClick()">Click me fast</button>
+    Click Count: {{ clickCount }}
     <div class="log">
       <div *ngFor="let l of logs">{{ l }}</div>
     </div>
@@ -20,6 +21,7 @@ import { fromEvent, Subscription, throttleTime } from 'rxjs';
 export class ThrottleDemoComponent implements OnDestroy {
   logs: string[] = [];
   private sub?: Subscription;
+  clickCount = 0;
 
   constructor() {
     // Throttle scroll events
@@ -34,6 +36,7 @@ export class ThrottleDemoComponent implements OnDestroy {
   onClick() {
     // Throttle per-click: emulate with a simple guard
     const now = Date.now();
+    this.clickCount++;
     if (!this._lastClick || now - this._lastClick > 500) {
       this._lastClick = now;
       this.logs.unshift(`click @ ${new Date().toLocaleTimeString()}`);
